@@ -12,7 +12,7 @@ struct Color {
     blue: u8,
 }
 
-// I AM NOT DONE
+
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -23,22 +23,102 @@ struct Color {
 // but the slice implementation needs to check the slice length!
 // Also note that correct RGB color values must be integers in the 0..=255 range.
 
+
+
+fn notValidRGB(val: i16) -> bool{
+
+    if val > 255{
+        return true;
+    }
+
+    if val < 0 {
+        return true;
+    }
+    return false;
+    
+}
+
+
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
+
     type Error = Box<dyn error::Error>;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        
+        let (red,green,blue) = tuple;
+
+        if(notValidRGB(red) || notValidRGB(green) || notValidRGB(blue)){
+            return Err("err")?;
+        }
+
+        
+        let color = Color{
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        };
+        Ok(color)
+    }
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+
+        let red = arr[0];
+        let green = arr[1];
+        let blue = arr[2];
+
+        if arr.len() != 3 {
+            return Err("err")?;
+        }
+
+        if(notValidRGB(red) || notValidRGB(green) || notValidRGB(blue)){
+            return Err("err")?;
+        }
+        
+        
+        
+        let color = Color{
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        };
+        Ok(color)
+    }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+
+    
+
+        if slice.len() != 3 {
+            return Err("err")?;
+        }
+
+        let red = slice[0];
+        let green = slice[1];
+        let blue = slice[2];
+        
+        if(notValidRGB(red) || notValidRGB(green) || notValidRGB(blue)){
+            return Err("err")?;
+        }
+        
+        let color = Color{
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        };
+        Ok(color)
+
+
+
+    }
 }
 
 fn main() {
